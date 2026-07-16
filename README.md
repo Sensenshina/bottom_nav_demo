@@ -1,17 +1,17 @@
-# bottom_nav_demo
+แนวคิดของ BottomNavigationBar และ BottomNavigationBarItem
+BottomNavigationBar (แถบเมนูหลัก): เป็น Widget ที่ถูกวางไว้ในช่อง bottomNavigationBar ของ Scaffold ทำหน้าที่ควบคุมแถบเมนูทั้งหมด เช่น การกำหนดสี, การรับรู้ว่าตอนนี้เลือกเมนูไหนอยู่ (currentIndex), และการดักจับเหตุการณ์เมื่อผู้ใช้กดเปลี่ยนเมนู (onTap)
+BottomNavigationBarItem (ปุ่มเมนูย่อย): เป็นวัตถุ (Object) ข้อมูลที่อยู่ภายใน BottomNavigationBar ทำหน้าที่กำหนดรูปลักษณ์ของแต่ละปุ่ม เช่น ไอคอน (icon) และข้อความใต้ไอคอน (label)
+BottomNavigationBar จะทำหน้าที่แค่ "แสดงปุ่มให้กด" และส่งสัญญาณบอกเราว่ากดปุ่มไหนเท่านั้น แต่ไม่ได้ทำหน้าที่สลับหน้าจอจริง ๆ เราต้องนำค่า currentIndex ไปควบคุมการสลับหน้าจอในส่วนของ body ด้วยตัวเอง
 
-A new Flutter project.
+IndexedStack ทำงานอย่างไรในการสลับหน้าจอโดยคงสถานะ
+หลักการทำงาน: IndexedStack จะรับ children (รายการหน้าจอทั้งหมด) เข้าไปเก็บไว้ และรับค่า index (ตัวเลขบอกว่าต้องการโชว์หน้าไหน)
+การคงสถานะ (Keep State): แทนที่จะทำลายหน้าจอที่ไม่ได้เลือกทิ้ง IndexedStack จะทำการ โหลดหน้าจอทั้งหมดขึ้นมารอไว้ตั้งแต่แรก และใช้เทคนิคซ้อนทับกัน โดยจะเปิดเผย (Render) เฉพาะหน้าจอที่มี index ตรงกับที่กำหนด ส่วนหน้าจออื่น ๆ จะถูกซ่อนไว้ในหน่วยความจำ
+ผลลัพธ์: เมื่อผู้ใช้กดสลับหน้าจอ หน้าจอจะเปลี่ยนไปทันทีโดยไม่ต้องโหลดใหม่ และข้อมูลหรือสถานะต่าง ๆ ในหน้าจอเดิมจะยังคงอยู่ครบถ้วน
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+สรุปขั้นตอนการสร้างและใช้งาน BottomNavigationBar + IndexedStack
+ขั้นตอนที่ 1: เตรียมหน้าจอและตัวแปรควบคุม
+สร้าง Stateful Widget ขึ้นมา แล้วประกาศตัวแปร _currentIndex เพื่อเก็บหน้าปัจจุบัน พร้อมสร้าง List ของหน้าจอที่ต้องการแสดง
+ขั้นตอนที่ 2: ใช้ IndexedStack ในส่วนของ body
+นำ IndexedStack ไปใส่ใน body ของ Scaffold เพื่อผูกหน้าจอเข้ากับตัวแปรควบคุม
+ขั้นตอนที่ 3: สร้าง BottomNavigationBar และอัปเดต State เมื่อมีการกด
+สร้างแถบเมนูด้านล่าง และใช้คำสั่ง setState() เพื่อเปลี่ยนค่า _currentIndex เมื่อผู้ใช้กดปุ่ม
